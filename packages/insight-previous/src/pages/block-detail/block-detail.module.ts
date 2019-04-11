@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { ErrorComponentModule } from '../../components/error/error.module';
 import { FooterComponentModule } from '../../components/footer/footer.module';
 import { HeadNavComponentModule } from '../../components/head-nav/head-nav.module';
 import { LoaderComponentModule } from '../../components/loader/loader.module';
+import { MessageComponentModule } from '../../components/message/message.module';
 import { TransactionListComponentModule } from '../../components/transaction-list/transaction-list.module';
 import { BlockDetailPage } from './block-detail';
 
@@ -15,7 +15,7 @@ import { BlockDetailPage } from './block-detail';
     FooterComponentModule,
     HeadNavComponentModule,
     LoaderComponentModule,
-    ErrorComponentModule
+    MessageComponentModule
   ],
   exports: [BlockDetailPage]
 })

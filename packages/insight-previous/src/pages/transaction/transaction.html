@@ -6,7 +6,8 @@
 
       <loader *ngIf="loading" [type]="'title'"></loader>
 
-      <error [message]="errorMessage" *ngIf="!loading && errorMessage && confirmations !== -3 "></error>
+      <message [message]="errorMessage" [type]="'error'" *ngIf="!loading && errorMessage && confirmations !== -3">
+      </message>
 
       <div *ngIf="(!loading && !errorMessage) || confirmations === -3">
         <h1 ion-text>
@@ -22,7 +23,7 @@
 
         <h2>Summary</h2>
 
-        <error [message]="errorMessage" *ngIf="!loading && errorMessage"></error>
+        <message [message]="errorMessage" [type]="'error'" *ngIf="!loading && errorMessage"></message>
 
         <ion-list class="list--summary">
           <ion-item>

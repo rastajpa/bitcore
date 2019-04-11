@@ -20,6 +20,7 @@ export interface ApiBlock {
   version: number;
   time: Date;
   timeNormalized: Date;
+  chain: string;
 }
 
 export interface AppBlock {
@@ -45,6 +46,7 @@ export interface AppBlock {
     url: string;
   };
   reward: number;
+  chain: string;
 }
 
 @Injectable()
@@ -58,6 +60,7 @@ export class BlocksProvider {
   public toAppBlock(block: ApiBlock): AppBlock {
     const difficulty: number = 0x1d00ffff / block.bits;
     return {
+      chain: block.chain,
       height: block.height,
       confirmations: block.confirmations,
       nonce: block.nonce,
