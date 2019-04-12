@@ -30,6 +30,14 @@ export interface ApiTx {
   spentHeight: number;
   value: number;
   version: number;
+  // ETH:
+  fee: number;
+  from: string;
+  gasLimit: number;
+  gasPrice: number;
+  internal: any[];
+  nonce: number;
+  to: string;
 }
 
 export interface ApiCoin {
@@ -108,6 +116,15 @@ export interface AppTx {
   fee: number;
   blockheight: number;
   blocktime: number;
+  // ETH:
+  from: string;
+  gasLimit: number;
+  gasPrice: number;
+  internal: any[];
+  nonce: number;
+  to: string;
+  value: number;
+  chain: string;
 }
 
 @Injectable()
@@ -117,7 +134,7 @@ export class TxsProvider {
     public currency: CurrencyProvider,
     public blocksProvider: BlocksProvider,
     private api: ApiProvider
-  ) {}
+  ) { }
 
   public getFee(tx: AppTx): number {
     const sumSatoshis: any = (arr: any): number =>
@@ -131,7 +148,7 @@ export class TxsProvider {
   public toAppTx(tx: ApiTx): AppTx {
     return {
       txid: tx.txid,
-      fee: null, // calculated later, when coins are retrieved
+      fee: tx.fee,
       blockheight: tx.blockHeight,
       confirmations: tx.confirmations,
       blockhash: tx.blockHash,
@@ -143,7 +160,16 @@ export class TxsProvider {
       vin: [], // populated when coins are retrieved
       vout: [], // populated when coins are retrieved
       valueOut: tx.value,
-      version: tx.version
+      version: tx.version,
+      // ETH:
+      from: tx.from ? tx.from : '',
+      gasLimit: tx.gasLimit ? tx.gasLimit : null,
+      gasPrice: tx.gasPrice ? tx.gasPrice : null,
+      internal: tx.internal ? tx.internal : null,
+      nonce: tx.nonce >= 0 ? tx.nonce : null,
+      to: tx.to ? tx.to : '',
+      value: tx.value,
+      chain: tx.chain
     };
   }
 
