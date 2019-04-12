@@ -35,6 +35,40 @@ export class ETHStateProvider extends InternalStateProvider implements CSP.IChai
     return new Web3(new ProviderType(connUrl));
   }
 
+  async getFee(params) {
+    let { network, target = 4 } = params;
+    if (network === 'livenet') {
+      network = 'mainnet'
+    }
+    const bestBlock = await this.getWeb3(network).eth.getBlockNumber();
+    const gasPrices: number[] = [];
+    for (let i = 0; i < target; i++) {
+      const block = await this.getWeb3(network).eth.getBlock(bestBlock - i);
+      const txs: any[] = await Promise.all(
+        block.transactions.map(txid => {
+          return this.getWeb3(network).eth.getTransaction(txid);
+        })
+      );
+      var blockGasPrices = txs.map(tx => {
+        return tx.gasPrice
+      });
+      // sort gas prices in descending order
+      blockGasPrices = blockGasPrices.sort((a, b) => {
+        return b - a;
+      });
+      var txCount = txs.length;
+      var lowGasPriceIndex = txCount > 1 ? txCount - 2 : 0;
+      if (txCount > 0) {
+        gasPrices.push(blockGasPrices[lowGasPriceIndex]);
+      }
+    }
+    var gethGasPrice = await this.getWeb3(network).eth.getGasPrice();
+    var estimate = gasPrices.reduce((a, b) => {
+      return Math.max(a, b);
+    }, gethGasPrice);
+    return estimate;
+  }
+
   async getBalanceForAddress(params: CSP.GetBalanceForAddressParams) {
     const { network, address } = params;
     const balance = Number(await this.getWeb3(network).eth.getBalance(address));

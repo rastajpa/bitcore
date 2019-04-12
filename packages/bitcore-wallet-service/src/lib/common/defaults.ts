@@ -58,6 +58,13 @@ module.exports = {
         nbBlocks: 2,
         defaultValue: 2000
       }
+    ],
+    eth: [
+      {
+        name: 'normal',
+        nbBlocks: 2,
+        defaultValue: 20000
+      }
     ]
   },
 
@@ -147,5 +154,7 @@ module.exports = {
   LOCK_EXE_TIME: 40 * 1000, // max lock time 50s
   SERVER_EXE_TIME: 40 * 1000 * 1.5,
 
-  BE_KEY_SALT: 'bws-auth-keysalt'
+  BE_KEY_SALT: 'bws-auth-keysalt',
+
+  BROADCAST_RETRY_TIME: 350, //ms
 };

@@ -805,7 +805,11 @@ API.prototype.openWallet = function(cb) {
   if (self.credentials.isComplete() && self.credentials.hasWalletInfo())
     return cb(null, true);
 
-  self.request.get('/v2/wallets/?includeExtendedInfo=1', function(err, ret) {
+    var qs = [];
+    qs.push('includeExtendedInfo=1');
+    qs.push('serverMessageArray=1');
+
+  self.request.get('/v3/wallets/?' + qs.join('&'), function(err, ret) {
     if (err) return cb(err);
     var wallet = ret.wallet;
 
@@ -1169,7 +1173,7 @@ API.prototype.decryptPrivateKey = function(password) {
 API.prototype.getFeeLevels = function(coin, network, cb) {
   var self = this;
 
-  $.checkArgument(coin || _.includes(['btc', 'bch'], coin));
+  $.checkArgument(coin || _.includes(['btc', 'bch', 'eth'], coin));
   $.checkArgument(network || _.includes(['livenet', 'testnet'], network));
 
   self.request.get(
@@ -1580,8 +1584,9 @@ API.prototype.getStatus = function(opts, cb) {
   var qs = [];
   qs.push('includeExtendedInfo=' + (opts.includeExtendedInfo ? '1' : '0'));
   qs.push('twoStep=' + (opts.twoStep ? '1' : '0'));
+  qs.push('serverMessageArray=1');
 
-  self.request.get('/v2/wallets/?' + qs.join('&'), function(err, result) {
+  self.request.get('/v3/wallets/?' + qs.join('&'), function(err, result) {
     if (err) return cb(err);
     if (result.wallet.status == 'pending') {
       var c = self.credentials;
@@ -1798,16 +1803,16 @@ API.prototype.createAddress = function(opts, cb) {
     log.warn('DEPRECATED WARN: createAddress should receive 2 parameters.');
   }
 
-  // if (!self._checkKeyDerivation()) return cb(new Error('Cannot create new address for this wallet'));
+  if (!self._checkKeyDerivation()) return cb(new Error('Cannot create new address for this wallet'));
 
   opts = opts || {};
 
   self.request.post('/v3/addresses/', opts, function(err, address) {
     if (err) return cb(err);
 
-    // if (!Verifier.checkAddress(self.credentials, address)) {
-    //   return cb(new Errors.SERVER_COMPROMISED);
-    // }
+    if (!Verifier.checkAddress(self.credentials, address)) {
+      return cb(new Errors.SERVER_COMPROMISED);
+    }
 
     return cb(null, address);
   });

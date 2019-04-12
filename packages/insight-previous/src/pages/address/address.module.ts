@@ -7,6 +7,7 @@ import { HeadNavComponentModule } from '../../components/head-nav/head-nav.modul
 import { LoaderComponentModule } from '../../components/loader/loader.module';
 import { MessageComponentModule } from '../../components/message/message.module';
 import { TransactionListComponentModule } from '../../components/transaction-list/transaction-list.module';
+import { CopyToClipboardModule } from '../../directives/copy-to-clipboard/copy-to-clipboard.module';
 import { AddressPage } from './address';
 
 @NgModule({
@@ -19,8 +20,9 @@ import { AddressPage } from './address';
     HeadNavComponentModule,
     QRCodeModule,
     LoaderComponentModule,
-    MessageComponentModule
+    MessageComponentModule,
+    CopyToClipboardModule
   ],
   exports: [AddressPage]
 })
-export class AddressPageModule {}
+export class AddressPageModule { }

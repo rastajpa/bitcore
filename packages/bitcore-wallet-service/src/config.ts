@@ -52,6 +52,9 @@ module.exports = {
     eth: {
       livenet: {
         url: 'http://localhost:3000'
+      },
+      mainnet: {
+        url: 'http://localhost:3000'
       }
     }
   },
@@ -74,7 +77,7 @@ module.exports = {
   //  ignoreTLS: true,
   //  subjectPrefix: '[Wallet Service]',
   //  from: 'wallet-service@bitcore.io',
-  //  templatePath: './lib/templates',
+  //  templatePath: 'templates',
   //  defaultLanguage: 'en',
   //  defaultUnit: 'btc',
   //  publicTxUrlTemplate: {

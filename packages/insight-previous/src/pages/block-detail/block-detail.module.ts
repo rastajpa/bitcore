@@ -5,6 +5,7 @@ import { HeadNavComponentModule } from '../../components/head-nav/head-nav.modul
 import { LoaderComponentModule } from '../../components/loader/loader.module';
 import { MessageComponentModule } from '../../components/message/message.module';
 import { TransactionListComponentModule } from '../../components/transaction-list/transaction-list.module';
+import { CopyToClipboardModule } from '../../directives/copy-to-clipboard/copy-to-clipboard.module';
 import { BlockDetailPage } from './block-detail';
 
 @NgModule({
@@ -15,8 +16,9 @@ import { BlockDetailPage } from './block-detail';
     FooterComponentModule,
     HeadNavComponentModule,
     LoaderComponentModule,
-    MessageComponentModule
+    MessageComponentModule,
+    CopyToClipboardModule
   ],
   exports: [BlockDetailPage]
 })
-export class BlockDetailPageModule {}
+export class BlockDetailPageModule { }
