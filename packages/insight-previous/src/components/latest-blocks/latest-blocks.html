@@ -1,4 +1,4 @@
-<error [message]="errorMessage" *ngIf="errorMessage"></error>
+<message [message]="errorMessage" [type]="'error'" *ngIf="errorMessage"></message>
 <div *ngIf="!errorMessage">
   <ion-grid class="grid--table">
 

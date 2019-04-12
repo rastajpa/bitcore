@@ -1,7 +1,11 @@
 <loader *ngIf="loading" [type]="'tx-full-list'"></loader>
 
 <div *ngIf="!loading">
-  <ion-grid>
+
+  <message [message]="'There are no transactions involving this block.'" [type]="'warning'"
+    *ngIf="transactions.length === 0"></message>
+
+  <ion-grid *ngIf="transactions.length > 0">
     <ion-row *ngFor="let tx of transactions; let i = index">
       <ion-col col-12 *ngIf="i < limit">
         <transaction [tx]="tx"></transaction>

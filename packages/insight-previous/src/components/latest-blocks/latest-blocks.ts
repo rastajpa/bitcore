@@ -1,6 +1,6 @@
 import { Component, Input, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ApiProvider } from '../../providers/api/api';
+import { ApiProvider, ChainNetwork } from '../../providers/api/api';
 import { AppBlock, BlocksProvider } from '../../providers/blocks/blocks';
 import { CurrencyProvider } from '../../providers/currency/currency';
 import { DefaultProvider } from '../../providers/default/default';
@@ -24,18 +24,21 @@ export class LatestBlocksComponent implements OnInit, OnDestroy {
   public blocks: AppBlock[] = [];
   public subscriber: Subscription;
   public errorMessage: string;
+  public chainNetwork: ChainNetwork;
 
   private reloadInterval: any;
 
   constructor(
+    public api: ApiProvider,
     public currency: CurrencyProvider,
     public defaults: DefaultProvider,
     public redirProvider: RedirProvider,
-    private blocksProvider: BlocksProvider,
     private apiProvider: ApiProvider,
-    private ngZone: NgZone,
-    private logger: Logger
+    private blocksProvider: BlocksProvider,
+    private logger: Logger,
+    private ngZone: NgZone
   ) {
+    this.chainNetwork = this.api.networkSettings.value.selectedNetwork;
     this.numBlocks = parseInt(defaults.getDefault('%NUM_BLOCKS%'), 10);
   }
 

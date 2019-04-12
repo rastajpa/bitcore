@@ -6,7 +6,8 @@
 
       <loader *ngIf="loading" [type]="'title'"></loader>
 
-      <error [message]="errorMessage" *ngIf="!loading && errorMessage && confirmations !== -3 "></error>
+      <message [message]="errorMessage" [type]="'error'" *ngIf="!loading && errorMessage && confirmations !== -3">
+      </message>
 
       <div *ngIf="(!loading && !errorMessage) || confirmations === -3">
         <h1 ion-text>
@@ -25,10 +26,10 @@
 
         <h2>Summary</h2>
 
-        <error [message]="errorMessage" *ngIf="!loading && errorMessage"></error>
+        <message [message]="errorMessage" [type]="'error'" *ngIf="!loading && errorMessage"></message>
 
         <ion-list class="list--summary">
-          <ion-item>
+          <ion-item *ngIf="tx.chain !== 'ETH'">
             Size
             <ion-note item-end>
               {{ tx.size }} (bytes)
@@ -36,8 +37,11 @@
           </ion-item>
           <ion-item *ngIf="tx.fee >= 0">
             Fee Rate
-            <ion-note item-end>
+            <ion-note item-end *ngIf="tx.chain !== 'ETH'">
               {{ (tx.fee / tx.size) | number:'1.0-2' }} sats/byte
+            </ion-note>
+            <ion-note item-end *ngIf="tx.chain === 'ETH'">
+              {{ tx.fee * 1e-18 | number:'1.0-14'}} Ether
             </ion-note>
           </ion-item>
           <ion-item>
@@ -64,11 +68,65 @@
               Unconfirmed
             </ion-note>
           </ion-item>
+          <div *ngIf="tx.chain === 'ETH'">
+            <ion-item>
+              From
+              <ion-note item-end>
+                {{ tx?.from }}
+              </ion-note>
+            </ion-item>
+            <ion-item>
+              To
+              <ion-note item-end>
+                {{ tx?.to }}
+              </ion-note>
+            </ion-item>
+            <ion-item>
+              Value
+              <ion-note item-end>
+                {{ tx?.value * 1e-18 | number:'1.0-2'}} Ether
+              </ion-note>
+            </ion-item>
+            <ion-item>
+              Gas Limit
+              <ion-note item-end>
+                {{ tx?.gasLimit }}
+              </ion-note>
+            </ion-item>
+            <ion-item>
+              Gas Used by Transaction
+              <ion-note item-end>
+                <!-- TODO -->
+                ----
+              </ion-note>
+            </ion-item>
+            <ion-item>
+              Gas Price
+              <ion-note item-end>
+                {{ tx?.gasPrice * 1e-18 | number:'1.0-14' }} Ether ({{ tx?.gasPrice * 1e-9 }} Gwei)
+              </ion-note>
+            </ion-item>
+            <ion-item>
+              Nonce
+              <ion-note item-end>
+                {{ tx?.nonce }}
+              </ion-note>
+            </ion-item>
+            <ion-item>
+              Input Data
+              <ion-note item-end>
+                <!-- TODO -->
+                ---
+              </ion-note>
+            </ion-item>
+          </div>
         </ion-list>
 
-        <h2>Details</h2>
+        <div *ngIf="tx.chain !== 'ETH'">
+          <h2>Details</h2>
 
-        <transaction [tx]="tx" [showCoins]="true"></transaction>
+          <transaction [tx]="tx" [showCoins]="true"></transaction>
+        </div>
       </div>
 
     </div>

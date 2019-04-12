@@ -6,7 +6,7 @@
 
       <loader *ngIf="loading" [type]="'title'"></loader>
 
-      <error [message]="errorMessage" *ngIf="!loading && errorMessage"></error>
+      <message [message]="errorMessage" [type]="'error'" *ngIf="!loading && errorMessage"></message>
 
       <div *ngIf="!loading && !errorMessage">
 
@@ -73,7 +73,7 @@
                 <ion-item>
                   Difficulty
                   <ion-note item-end>
-                    {{ block.difficulty }}
+                    {{ block.difficulty || '' }}
                   </ion-note>
                 </ion-item>
                 <ion-item>
